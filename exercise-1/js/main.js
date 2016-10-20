@@ -1,20 +1,60 @@
 // Main.js
 $(function() {
     // Setup: Initialize Firebase using the configuration of your project
+    // Configuration: replace <THESE_VALUES> with your values from firebase
+    
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyDLOT1bU619sAXZ6O9qmrX_RlH4GU5OhGo",
+        authDomain: "project1-e27e4.firebaseapp.com",
+        databaseURL: "https://project1-e27e4.firebaseio.com",
+        storageBucket: "project1-e27e4.appspot.com",
+        messagingSenderId: "197632795046"
+      };
+      firebase.initializeApp(config);
+    
 
-
-    // Reading Data: Create new database reference 'todos'
-
-
+    // Creating Data: Create new database reference 'todos'
+    var todos = firebase.database().ref('todos');
+    
     // Reading Data:
     // Set listener: on change, empty the todo list, and iterate through to make a new list
 
+    // Listen to changes to 'todos': will execute on connection, and on any change (value)
+    todos.on('value', function(snapshot) {
+        // Get the value of the data
+
+        $('#todo-list').empty();
+        var data = snapshot.val();
+        console.log(data);
+        
+        // Iterate through key/value pairs
+        Object.keys(data).forEach(function(key) {
+            // Get value of object using key
+            var value = data[key];
+
+            renderTodo(key, data[key]);
+
+            // Create an element with the key as an ID
+            // var body = $('body');
+            // var button = $('<button>').attr('id', key);
+            // button.on('click', function() {
+            //     // Get the key back from the button
+            //     var key = this.id;
+
+                // Update element
+
+        });
+        //body.append(button);
+    });
+
+    //});
 
 
 
     // Rendering Data: Function to make todos
     var renderTodo = function(id, content) {
-
+       $('#todo-list').append(content);
         // Create new todo <div> with classes 'todo', and the priority of the item
 
 
@@ -43,7 +83,11 @@ $(function() {
         var text = $(this).find('input').val();
 
         // Reading Data: Push new item into `todos` reference
-
+        todos.push({
+            description: text,
+            urgency: priority,
+            priority: 'incomplete'
+        });
 
         // Reset the form
         this.reset();

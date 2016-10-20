@@ -56,22 +56,38 @@ $(function() {
     var renderTodo = function(id, content) {
        $('#todo-list').append(content);
         // Create new todo <div> with classes 'todo', and the priority of the item
-
+        var todoItem = $('<div>').addClass("todo" + content.urgency);
 
         // Create an <h5> element, set it's text to the description, and class as the status
+        var h5 = $('<h5>').text(content.description).addClass(content.status);
+
+        todoItem.append(h5);
 
         // Update Data: create a check icon with click event
+        var checkbox = $("<i>").addClass("fa fa-check fa-2x" + content.status);
+        todoItem.append(checkbox);
+        checkbox.on('click', function() {
+            var status = content.status == 'complete' ? 'incomplete' : 'complete';
+            var childRef = todos.child(id);
+            childRef.set({
+                description:content.description,
+                urgency:content.urgency,
+                status:status
+            });
+        });
             // Flip the status on click
             // Set the child values of the item
 
 
         // Deleting data: Delete icon: on click, remove the reference
+        var deleteIcon = $('<i>').addClass('fa fa-times fa-2x');
+        deleteIcon.on('click', )
 
         // Update/Delete data: append the icons to the newTodo item
 
 
         // Append newTodo item to item with id #todo-list
-
+        $('#todo-list').append(todoItem);
     };
 
     // Reading Data: Form submission
